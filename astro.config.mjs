@@ -5,5 +5,6 @@ import sitemap from '@astrojs/sitemap';
 // cámbiala aquí. Se usa para el mapa del sitio y para Google.
 export default defineConfig({
   site: 'https://aestheticnotesandco.com',
-  integrations: [sitemap()],
+  integrations: [sitemap({ filter: (page) => !page.includes('/gracias') })],
+  trailingSlash: 'ignore',
 });
