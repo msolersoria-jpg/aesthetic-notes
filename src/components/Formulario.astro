@@ -1,18 +1,17 @@
 ---
-// Formulario de contacto. Envía a tu email a través de FormSubmit (gratis, sin cuenta).
-// La PRIMERA vez que alguien lo use, FormSubmit te manda un email para activarlo:
-// pulsa "Activate form" y desde entonces te llegan todas las consultas.
-import { site, opcionesServicio } from '../data/site.js';
+// Formulario de contacto. Envía a tu email a través de Web3Forms (gratis).
+// La clave (access_key) es pública: está pensada para ir en la web.
+// Las consultas llegan a hola@aestheticnotesandco.com (que se reenvía a tu Gmail).
+import { opcionesServicio, site } from '../data/site.js';
 const { servicio = '', id = 'formulario' } = Astro.props;
-const destino = `https://formsubmit.co/${site.email}`;
 const gracias = new URL('/gracias/', Astro.site).href;
 ---
-<form class="form" id={id} action={destino} method="POST" accept-charset="UTF-8">
-  <input type="hidden" name="_subject" value="Nueva consulta desde la web · Aesthetic Notes & Co" />
-  <input type="hidden" name="_next" value={gracias} />
-  <input type="hidden" name="_template" value="table" />
-  <input type="hidden" name="_captcha" value="false" />
-  <input type="text" name="_honey" class="trampa" tabindex="-1" autocomplete="off" aria-hidden="true" />
+<form class="form" id={id} action="https://api.web3forms.com/submit" method="POST" accept-charset="UTF-8">
+  <input type="hidden" name="access_key" value="ee55ef77-acc7-4bd2-8c1a-d7f463531b9f" />
+  <input type="hidden" name="subject" value="Nueva consulta desde la web · Aesthetic Notes & Co" />
+  <input type="hidden" name="from_name" value="Web Aesthetic Notes & Co" />
+  <input type="hidden" name="redirect" value={gracias} />
+  <input type="checkbox" name="botcheck" class="trampa" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
   <div class="fila">
     <label>
