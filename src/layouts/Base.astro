@@ -9,11 +9,13 @@ import '@fontsource/jost/400.css';
 import '@fontsource/jost/500.css';
 import { site } from '../data/site.js';
 const {
-  title = 'Decoradora y estilista de interiores en Barcelona, Vallès y Maresme | Aesthetic Notes — Interior Styling',
+  title = 'Decoradora de interiores en Barcelona, el Vallès y el Maresme | Aesthetic Notes & Co',
   description = 'Decoración y estilismo de interiores sin obras en Barcelona, Vallès Occidental, Vallès Oriental y Maresme, y asesoría online. Color, textiles y piezas a medida para que tu casa luzca en su mejor versión.',
   image = '/og.jpg',
   schema = null,
+  noindex = false,
 } = Astro.props;
+const extra = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const imageUrl = new URL(image, Astro.site).href;
 const negocio = {
@@ -21,9 +23,23 @@ const negocio = {
   '@type': 'ProfessionalService',
   '@id': new URL('/#negocio', Astro.site).href,
   name: site.nombre,
-  description: 'Decoración y estilismo de interiores sin obras, asesoría de color y textil, estilismo para marcas y home staging.',
+  description: 'Decoración y estilismo de interiores sin obras, asesoría de color y textil, asesoría online y personal shopper de decoración, estilismo para marcas y home staging.',
   url: Astro.site.href,
   image: new URL('/og.jpg', Astro.site).href,
+  logo: new URL('/favicon.svg', Astro.site).href,
+  priceRange: '€€',
+  address: { '@type': 'PostalAddress', addressRegion: 'Barcelona', addressCountry: 'ES' },
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Servicios de decoración y estilismo de interiores',
+    itemListElement: [
+      'Decoración de interiores sin obras',
+      'Asesoría de color y textil',
+      'Estilismo para marcas',
+      'Home staging',
+      'Asesoría de decoración online y personal shopper',
+    ].map((name) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name } })),
+  },
   founder: { '@type': 'Person', name: 'Marta', jobTitle: 'Estilista y decoradora de interiores' },
   areaServed: [
     { '@type': 'City', name: 'Barcelona' },
@@ -33,7 +49,7 @@ const negocio = {
     { '@type': 'Country', name: 'España' },
   ],
   knowsAbout: ['Decoración de interiores', 'Estilismo de interiores', 'Home staging', 'Asesoría de color', 'Textil hogar', 'Decoración online'],
-  sameAs: [site.instagram, site.houzz].filter(Boolean),
+  sameAs: [site.instagram, site.houzz, site.google].filter(Boolean),
   ...(site.email ? { email: site.email } : {}),
   ...(site.whatsapp ? { telephone: '+' + site.whatsapp } : {}),
 };
@@ -45,6 +61,7 @@ const negocio = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <link rel="canonical" href={canonical} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta property="og:type" content="website" />
@@ -55,7 +72,7 @@ const negocio = {
     <meta property="og:description" content={description} />
     <meta property="og:image" content={imageUrl} />
     <meta name="twitter:card" content="summary_large_image" />
-    <script type="application/ld+json" set:html={JSON.stringify(schema ? [negocio, schema] : negocio)} />
+    <script type="application/ld+json" set:html={JSON.stringify(extra.length ? [negocio, ...extra] : negocio)} />
     <meta name="theme-color" content="#ffffff" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
@@ -64,6 +81,7 @@ const negocio = {
       <nav class="nav-izq">
         <a href="/#proyectos">Proyectos</a>
         <a href="/#servicios">Servicios</a>
+        <a href="/asesoria-personal-shopper/">Asesoría online</a>
       </nav>
       <a href="/" class="marca">Aesthetic Notes &amp; Co <span>Interior Styling</span></a>
       <nav class="nav-der">
@@ -78,7 +96,11 @@ const negocio = {
       <a href="/" class="marca-pie">Aesthetic Notes &amp; Co <span>Interior Styling</span></a>
       <div class="pie-linea">
         <span>Decoración y estilismo de interiores · {site.zona}</span>
-        <a href={site.instagram} target="_blank" rel="noopener">Instagram — @aestheticnotesandco</a>
+        <span class="pie-links">
+          <a href="/asesoria-personal-shopper/">Asesoría online</a>
+          <a href="/privacidad/">Privacidad</a>
+          <a href={site.instagram} target="_blank" rel="noopener">Instagram — @aestheticnotesandco</a>
+        </span>
       </div>
     </footer>
   </body>
@@ -213,6 +235,7 @@ const negocio = {
     color: var(--tinta-suave);
   }
   .pie-linea a { text-decoration: none; }
+  .pie-links { display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem 1.8rem; }
 
   @media (max-width: 760px) {
     .top { grid-template-columns: auto 1fr; }
@@ -220,7 +243,7 @@ const negocio = {
     .marca { font-size: 0.92rem; letter-spacing: 0.2em; align-items: flex-start; }
     .marca span { padding-left: 0; }
     .pie-linea { justify-content: center; text-align: center; }
-    .marca-pie { font-size: 1.15rem; letter-spacing: 0.18em; }
+    .marca-pie { display: inline-flex; flex-direction: column; align-items: center; max-width: 100%; font-size: 1.15rem; letter-spacing: 0.18em; }
     .marca-pie span { letter-spacing: 0.3em; }
   }
 </style>
