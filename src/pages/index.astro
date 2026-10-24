@@ -49,7 +49,7 @@ const whatsappUrl = site.whatsapp
         <p class="sub">Decoración sin obras en Barcelona, el Vallès y el Maresme: con color, textiles y las piezas justas.</p>
         <div class="acciones">
           <a class="boton lleno" href="#contacto">Cuéntame tu casa</a>
-          <a class="enlace" href="#proyectos">Ver proyectos</a>
+          {site.llamada ? <a class="enlace" href={site.llamada} target="_blank" rel="noopener">Primera llamada gratuita</a> : <a class="enlace" href="#proyectos">Ver proyectos</a>}
         </div>
       </div>
       <figure class="hero-foto">
@@ -165,6 +165,9 @@ const whatsappUrl = site.whatsapp
           </li>
         ))}
       </ul>
+      {site.llamada && (
+        <p class="llamada">¿Prefieres hablarlo? <a class="enlace" href={site.llamada} target="_blank" rel="noopener">Primera llamada gratuita · 20 min</a></p>
+      )}
       <Formulario />
       <div class="directo">
         <p class="eyebrow">¿Prefieres escribirme directamente?</p>
@@ -349,6 +352,8 @@ const whatsappUrl = site.whatsapp
   }
   .contacto .acciones { justify-content: center; }
   .directo { margin-top: clamp(3.5rem, 7vw, 5rem); padding-top: 2.5rem; border-top: 1px solid var(--linea); max-width: 760px; margin-left: auto; margin-right: auto; }
+  .llamada { margin: 0 auto 3rem; font-family: var(--serif); font-style: italic; font-size: 1.3rem; color: var(--tinta-suave); display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 0.6rem 1.2rem; }
+  .llamada .enlace { font-family: var(--sans); font-style: normal; color: var(--tinta); }
   .directo .acciones { gap: 1.2rem 2.2rem; }
   h1 .eyebrow { display: block; font-family: var(--sans); font-size: 0.68rem; line-height: 1.7; letter-spacing: 0.34em; margin-bottom: 1.1rem; }
   .indice h3 a { text-decoration: none; }
