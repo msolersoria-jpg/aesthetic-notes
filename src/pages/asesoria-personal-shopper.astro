@@ -103,7 +103,7 @@ const reservar = (clave) => (clave === 'online' && site.reserva ? site.reserva :
         <p class="lista-cosas">Cortinas · ropa de cama · cojines · alfombras · cerámica · luz · arte</p>
         <div class="acciones">
           <a class="boton lleno" href={reservar('online')} {...(site.reserva ? { target: '_blank', rel: 'noopener' } : {})}>Reservar asesoría online</a>
-          <a class="enlace" href="#modalidades">Ver modalidades</a>
+          {site.llamada ? <a class="enlace" href={site.llamada} target="_blank" rel="noopener">¿Dudas? Primera llamada gratuita</a> : <a class="enlace" href="#modalidades">Ver modalidades</a>}
         </div>
       </div>
     </section>
@@ -162,8 +162,11 @@ const reservar = (clave) => (clave === 'online' && site.reserva ? site.reserva :
       <h2>Empecemos por <em>tu casa</em></h2>
       {site.reserva ? (
         <>
-          <p class="reserva-sub">Elige día y hora para tu asesoría online. Si prefieres otra modalidad, escríbeme aquí abajo.</p>
-          <a class="boton lleno" href={site.reserva} target="_blank" rel="noopener">Elegir día y hora</a>
+          <p class="reserva-sub">Elige día y hora para tu asesoría online. Si prefieres otra modalidad o tienes dudas, reserva una primera llamada gratuita o escríbeme aquí abajo.</p>
+          <div class="acciones centro">
+            <a class="boton lleno" href={site.reserva} target="_blank" rel="noopener">Elegir día y hora</a>
+            {site.llamada && <a class="enlace" href={site.llamada} target="_blank" rel="noopener">Primera llamada gratuita · 20 min</a>}
+          </div>
           <div class="separa"></div>
         </>
       ) : (
@@ -287,6 +290,7 @@ const reservar = (clave) => (clave === 'online' && site.reserva ? site.reserva :
   .reserva { text-align: center; padding: clamp(5rem, 11vw, 8rem) var(--gutter); border-top: 1px solid var(--linea); }
   .reserva h2 { font-size: clamp(2.6rem, 7vw, 5rem); }
   .reserva-sub { margin: 1.4rem auto 3rem; max-width: 40ch; font-family: var(--serif); font-style: italic; font-size: 1.4rem; color: var(--tinta-suave); }
+  .acciones.centro { justify-content: center; }
   .separa { height: 1px; width: min(100%, 760px); margin: 3.5rem auto; background: var(--linea); }
 
   @media (max-width: 900px) {
