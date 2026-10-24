@@ -18,7 +18,7 @@ export const site = {
 
   // Datos legales: solo aparecen en la página de privacidad (no en la marca).
   titular: 'Marta Soler Soria',
-  nif: '',
+  nif: '47159719J',
 
   zona: 'Barcelona · Vallès · Maresme · Online',
   zonas: [
