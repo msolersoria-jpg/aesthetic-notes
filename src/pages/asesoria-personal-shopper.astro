@@ -1,0 +1,302 @@
+---
+import Base from '../layouts/Base.astro';
+import Formulario from '../components/Formulario.astro';
+import { site } from '../data/site.js';
+
+const modalidades = [
+  {
+    n: 'I',
+    clave: 'online',
+    t: 'Online',
+    sub: 'Tu lista',
+    precio: '150 €',
+    nota: 'por estancia · IVA incluido',
+    d: 'Me mandas fotos y medidas de la estancia. Recibes un moodboard y tu lista de compra con enlaces, en dos o tres niveles de precio, y lo repasamos juntas por videollamada.',
+    donde: 'En toda España',
+    foto: '/proyectos/br/br-16.webp',
+    alt: 'Detalle de cojines de lino y plaid oscuro sobre sofá claro',
+  },
+  {
+    n: 'II',
+    clave: 'compras',
+    t: 'De compras juntas',
+    sub: 'Te acompaño',
+    precio: '190 €',
+    nota: 'IVA incluido',
+    d: 'Preparo la lista de antemano y pasamos una mañana de tiendas juntas: tocamos los tejidos, comparamos tamaños y compras con la seguridad de acertar.',
+    donde: 'Barcelona, Vallès y Maresme',
+    foto: '/proyectos/br/br-14.webp',
+    alt: 'Escultura de cerámica, velas y espejo redondo sobre mueble negro',
+  },
+  {
+    n: 'III',
+    clave: 'lo-hago-yo',
+    t: 'Lo hago yo',
+    sub: 'Sin preocupaciones para ti',
+    precio: '290 €',
+    nota: 'por estancia, o el 15 % de la compra · IVA incluido',
+    d: 'Compro por ti, lo recibo y lo coloco en tu casa, con el estilismo final incluido. Tú solo abres la puerta.',
+    donde: 'Barcelona, Vallès y Maresme',
+    foto: '/proyectos/br/br-09.webp',
+    alt: 'Cama vestida con ropa de lino blanco y cojines en blanco y negro',
+  },
+];
+
+const pasos = [
+  ['Me escribes', 'Me cuentas qué estancia quieres cambiar y qué te gustaría sentir en ella.'],
+  ['Fotos y medidas', 'Te paso una pequeña guía para hacer las fotos y tomar las medidas justas.'],
+  ['Moodboard y lista', 'Preparo tu paleta de texturas y una lista de compra con enlaces, en dos o tres niveles de precio.'],
+  ['Videollamada', 'Lo repasamos juntas, resuelvo tus dudas y ajustamos lo que haga falta.'],
+];
+
+const preguntas = [
+  ['¿Y si no sé cuál es mi estilo?', 'Es lo más habitual, y es justo mi trabajo. Partimos de cómo vives tu casa, de lo que ya tienes y de un par de imágenes que te gusten; con eso encuentro una línea coherente para ti.'],
+  ['¿Qué incluye exactamente?', 'Textiles y decoración: cortinas, ropa de cama, cojines, plaids, alfombras, cerámica, iluminación y arte. No incluye obras ni mobiliario a medida; para eso está el servicio de decoración.'],
+  ['¿Los productos van incluidos en el precio?', 'No. El precio es el de mi trabajo, con IVA incluido. Los productos los pagas tú directamente en cada tienda, o yo por ti en la modalidad «Lo hago yo».'],
+  ['¿En qué tiendas compramos?', 'En las que encajen con tu casa y tu presupuesto. No trabajo para ninguna marca: por eso la lista incluye opciones en dos o tres niveles de precio.'],
+  ['¿Funciona igual online?', 'Sí. Con buenas fotos, medidas y una videollamada puedo ayudarte estés donde estés. Si estás en Barcelona, el Vallès o el Maresme, también podemos vernos en persona.'],
+];
+
+const servicio = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Asesoría de decoración y Personal Shopper de textiles y decoración',
+  serviceType: 'Personal shopper de decoración',
+  provider: { '@id': new URL('/#negocio', Astro.site).href },
+  areaServed: ['Barcelona', 'Vallès Occidental', 'Vallès Oriental', 'Maresme', 'España'],
+  offers: modalidades.map((m) => ({
+    '@type': 'Offer',
+    name: `${m.t} — ${m.sub}`,
+    description: m.d,
+    priceSpecification: {
+      '@type': 'PriceSpecification',
+      minPrice: parseInt(m.precio),
+      priceCurrency: 'EUR',
+      valueAddedTaxIncluded: true,
+    },
+  })),
+};
+const faq = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: preguntas.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+};
+
+const reservar = (clave) => (clave === 'online' && site.reserva ? site.reserva : `?servicio=${clave}#reserva`);
+---
+<Base
+  title="Asesoría de decoración online y Personal Shopper | Aesthetic Notes & Co"
+  description="Asesoría de decoración online desde 150 € y personal shopper de textiles y decoración en Barcelona, el Vallès y el Maresme. Moodboard, lista de compra con enlaces y videollamada."
+  image="/proyectos/br/br-04.webp"
+  schema={[servicio, faq]}
+>
+  <main>
+    <section class="cabecera">
+      <figure class="cab-foto">
+        <img src="/proyectos/br/br-04.webp" alt="Detalle de ropa de cama de lino en tonos arena y blanco" fetchpriority="high" />
+      </figure>
+      <div class="cab-texto">
+        <a href="/#servicios" class="volver">← Servicios</a>
+        <p class="eyebrow">Servicio Nº 05</p>
+        <h1>Asesoría &amp; <em>Personal Shopper</em></h1>
+        <p class="sub">Textiles y decoración para tu casa, elegidos con criterio. Sin errores caros y sin perder tardes en tiendas.</p>
+        <p class="lista-cosas">Cortinas · ropa de cama · cojines · alfombras · cerámica · luz · arte</p>
+        <div class="acciones">
+          <a class="boton lleno" href={reservar('online')} {...(site.reserva ? { target: '_blank', rel: 'noopener' } : {})}>Reservar asesoría online</a>
+          <a class="enlace" href="#modalidades">Ver modalidades</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="modalidades" class="modalidades">
+      <div class="seccion-cab">
+        <h2>Tres formas de trabajar juntas</h2>
+        <span class="contador">03</span>
+      </div>
+      <div class="rejilla">
+        {modalidades.map((m) => (
+          <article class="modalidad">
+            <div class="foto"><img src={m.foto} alt={m.alt} loading="lazy" /></div>
+            <p class="num">{m.n}</p>
+            <h3>{m.t}</h3>
+            <p class="subt">{m.sub}</p>
+            <p class="precio"><span>desde</span> {m.precio}</p>
+            <p class="nota">{m.nota}</p>
+            <p class="desc">{m.d}</p>
+            <p class="donde">{m.donde}</p>
+            <a class="enlace" href={reservar(m.clave)} {...(m.clave === 'online' && site.reserva ? { target: '_blank', rel: 'noopener' } : {})}>Reservar</a>
+          </article>
+        ))}
+      </div>
+      <p class="aviso">Precios para particulares, con IVA incluido. Los productos se pagan aparte, directamente en cada tienda.</p>
+    </section>
+
+    <section class="proceso">
+      <p class="eyebrow">Cómo funciona la asesoría online</p>
+      <ol>
+        {pasos.map(([t, d], i) => (
+          <li>
+            <span class="paso-num">{['I', 'II', 'III', 'IV'][i]}</span>
+            <h3>{t}</h3>
+            <p>{d}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="preguntas">
+      <div class="seccion-cab">
+        <h2>Preguntas frecuentes</h2>
+        <span class="contador">{String(preguntas.length).padStart(2, '0')}</span>
+      </div>
+      {preguntas.map(([q, a]) => (
+        <details>
+          <summary>{q}</summary>
+          <p>{a}</p>
+        </details>
+      ))}
+    </section>
+
+    <section id="reserva" class="reserva">
+      <p class="eyebrow">Reserva</p>
+      <h2>Empecemos por <em>tu casa</em></h2>
+      {site.reserva ? (
+        <>
+          <p class="reserva-sub">Elige día y hora para tu asesoría online. Si prefieres otra modalidad, escríbeme aquí abajo.</p>
+          <a class="boton lleno" href={site.reserva} target="_blank" rel="noopener">Elegir día y hora</a>
+          <div class="separa"></div>
+        </>
+      ) : (
+        <p class="reserva-sub">Cuéntame qué estancia quieres cambiar y te respondo con fecha y los siguientes pasos.</p>
+      )}
+      <Formulario servicio="online" id="formulario-reserva" />
+    </section>
+  </main>
+</Base>
+
+<style>
+  h1, h2, h3 { font-family: var(--serif); font-weight: 400; margin: 0; }
+  h2 { font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1.04; font-weight: 300; }
+  em { font-style: italic; }
+  figure { margin: 0; }
+  .acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 1.6rem; }
+
+  .cabecera {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: center;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 4.5rem) var(--gutter) clamp(4rem, 9vw, 7rem);
+  }
+  .cab-foto img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+  .volver {
+    display: inline-block;
+    margin-bottom: 2.4rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--tinta-suave);
+  }
+  h1 { font-weight: 300; font-size: clamp(3rem, 6.4vw, 6rem); line-height: 1; }
+  .sub {
+    margin: 1.6rem 0 1.4rem;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(1.25rem, 2vw, 1.55rem);
+    color: var(--tinta-suave);
+    max-width: 30ch;
+  }
+  .lista-cosas {
+    margin: 0 0 2.6rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--tinta-suave);
+    line-height: 2;
+  }
+
+  .seccion-cab {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding-bottom: 1.2rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    border-bottom: 1px solid var(--tinta);
+  }
+  .contador { font-family: var(--serif); font-style: italic; font-size: clamp(1.4rem, 2.5vw, 2rem); color: var(--tinta-suave); }
+
+  .modalidades { max-width: 1320px; margin: 0 auto; padding: 0 var(--gutter) clamp(5rem, 11vw, 8rem); }
+  .rejilla { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(2.5rem, 4vw, 4rem); }
+  .modalidad { display: flex; flex-direction: column; }
+  .modalidad .foto { aspect-ratio: 4 / 5; overflow: hidden; background: var(--arena); margin-bottom: 1.4rem; }
+  .modalidad .foto img { width: 100%; height: 100%; object-fit: cover; }
+  .num { margin: 0; font-family: var(--serif); font-style: italic; font-size: 1.3rem; color: var(--tinta-suave); }
+  .modalidad h3 { font-size: clamp(1.9rem, 2.8vw, 2.4rem); font-weight: 300; line-height: 1.1; }
+  .subt { margin: 0.2rem 0 1.2rem; font-family: var(--serif); font-style: italic; font-size: 1.2rem; color: var(--tinta-suave); }
+  .precio {
+    margin: 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--linea);
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 300;
+  }
+  .precio span { font-family: var(--sans); font-size: 0.66rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--tinta-suave); vertical-align: middle; margin-right: 0.3rem; }
+  .nota { margin: 0 0 1.2rem; font-size: 0.72rem; letter-spacing: 0.06em; color: var(--tinta-suave); }
+  .desc { margin: 0 0 1rem; color: var(--tinta-suave); flex-grow: 1; }
+  .donde { margin: 0 0 1.6rem; font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; }
+  .modalidad .enlace { align-self: flex-start; }
+  .aviso { margin: clamp(2.5rem, 5vw, 3.5rem) 0 0; text-align: center; font-family: var(--serif); font-style: italic; font-size: 1.1rem; color: var(--tinta-suave); }
+
+  .proceso { background: var(--papel); padding: clamp(4.5rem, 10vw, 7.5rem) var(--gutter); text-align: center; }
+  .proceso ol {
+    list-style: none;
+    margin: 2.5rem auto 0;
+    padding: 0;
+    max-width: 1200px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(2rem, 4vw, 3.5rem);
+  }
+  .paso-num { font-family: var(--serif); font-style: italic; font-size: 1.6rem; color: var(--tinta-suave); }
+  .proceso h3 { font-size: clamp(1.8rem, 2.6vw, 2.2rem); font-weight: 300; margin: 0.4rem 0 0.8rem; }
+  .proceso li p { margin: 0 auto; color: var(--tinta-suave); max-width: 28ch; }
+
+  .preguntas { max-width: 960px; margin: 0 auto; padding: clamp(5rem, 11vw, 8rem) var(--gutter); }
+  details { border-bottom: 1px solid var(--linea); }
+  summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.5rem 0;
+    font-family: var(--serif);
+    font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+    font-weight: 400;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; font-weight: 300; color: var(--tinta-suave); transition: transform 0.3s; }
+  details[open] summary::after { transform: rotate(45deg); }
+  details p { margin: 0 0 1.6rem; color: var(--tinta-suave); max-width: 62ch; }
+
+  .reserva { text-align: center; padding: clamp(5rem, 11vw, 8rem) var(--gutter); border-top: 1px solid var(--linea); }
+  .reserva h2 { font-size: clamp(2.6rem, 7vw, 5rem); }
+  .reserva-sub { margin: 1.4rem auto 3rem; max-width: 40ch; font-family: var(--serif); font-style: italic; font-size: 1.4rem; color: var(--tinta-suave); }
+  .separa { height: 1px; width: min(100%, 760px); margin: 3.5rem auto; background: var(--linea); }
+
+  @media (max-width: 900px) {
+    .cabecera { grid-template-columns: 1fr; }
+    .cab-foto img { aspect-ratio: 4 / 3; }
+    .rejilla { grid-template-columns: 1fr; }
+    .modalidad .foto { aspect-ratio: 3 / 2; }
+    .proceso ol { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .proceso ol { grid-template-columns: 1fr; }
+  }
+</style>
