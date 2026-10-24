@@ -14,7 +14,9 @@ export const site = {
   // Agenda de la asesoría online. Pega aquí el enlace de tu página de reservas
   // (por ejemplo https://cal.com/aestheticnotes/asesoria-online).
   // Mientras esté vacío, el botón "Reservar" lleva al formulario de contacto.
-  reserva: '',
+  reserva: 'https://cal.com/aestheticnotesandco/asesoria-online',
+  // Primera llamada gratuita de 20 min (Cal.com)
+  llamada: 'https://cal.com/aestheticnotesandco/primera-llamada',
 
   // Datos legales: solo aparecen en la página de privacidad (no en la marca).
   titular: 'Marta Soler Soria',
