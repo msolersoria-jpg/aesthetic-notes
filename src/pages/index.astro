@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { proyectos } from '../data/proyectos.js';
 import { site } from '../data/site.js';
+import Formulario from '../components/Formulario.astro';
 
 const servicios = [
   {
@@ -20,6 +21,11 @@ const servicios = [
     t: 'Home staging',
     d: 'Puesta en escena de viviendas para vender o alquilar antes: que se vean en su mejor versión, en las fotos y en la visita.',
   },
+  {
+    t: 'Asesoría & Personal Shopper',
+    d: 'Te ayudo a elegir y comprar los textiles y la decoración que tu casa necesita, con criterio y sin errores caros. Online, de compras juntas o lo hago yo.',
+    url: '/asesoria-personal-shopper/',
+  },
 ];
 
 const pasos = [
@@ -36,8 +42,10 @@ const whatsappUrl = site.whatsapp
   <main>
     <section class="hero">
       <div class="hero-texto">
-        <p class="eyebrow">Nº 01 — Decoradora y estilista de interiores</p>
-        <h1>Tu casa,<br /><em>en su mejor versión</em></h1>
+        <h1>
+          <span class="eyebrow">Nº 01 — Decoradora y estilista de interiores en Barcelona</span>
+          Tu casa,<br /><em>en su mejor versión</em>
+        </h1>
         <p class="sub">Decoración sin obras en Barcelona, el Vallès y el Maresme: con color, textiles y las piezas justas.</p>
         <div class="acciones">
           <a class="boton lleno" href="#contacto">Cuéntame tu casa</a>
@@ -105,8 +113,8 @@ const whatsappUrl = site.whatsapp
         {servicios.map((sv, i) => (
           <li>
             <span class="num">{String(i + 1).padStart(2, '0')}</span>
-            <h3>{sv.t}</h3>
-            <p>{sv.d}</p>
+            <h3>{sv.url ? <a href={sv.url}>{sv.t}</a> : sv.t}</h3>
+            <p>{sv.d}{sv.url && <> <a class="enlace mas" href={sv.url}>Ver modalidades y precios</a></>}</p>
           </li>
         ))}
       </ol>
@@ -157,10 +165,14 @@ const whatsappUrl = site.whatsapp
           </li>
         ))}
       </ul>
-      <div class="acciones">
-        {whatsappUrl && <a class="boton lleno" href={whatsappUrl} target="_blank" rel="noopener">WhatsApp</a>}
-       {site.email && <a class="boton" href={`https://mail.google.com/mail/?view=cm&to=${site.email}`} target="_blank" rel="noopener">Email</a>}`
-        <a class={`boton ${!whatsappUrl && !site.email ? 'lleno' : ''}`} href={site.instagram} target="_blank" rel="noopener">Escríbeme por Instagram</a>
+      <Formulario />
+      <div class="directo">
+        <p class="eyebrow">¿Prefieres escribirme directamente?</p>
+        <div class="acciones">
+          {whatsappUrl && <a class="enlace" href={whatsappUrl} target="_blank" rel="noopener">WhatsApp</a>}
+          {site.email && <a class="enlace" href={`mailto:${site.email}`}>{site.email}</a>}
+          <a class="enlace" href={site.instagram} target="_blank" rel="noopener">Instagram</a>
+        </div>
       </div>
     </section>
   </main>
@@ -336,6 +348,12 @@ const whatsappUrl = site.whatsapp
     color: var(--tinta-suave);
   }
   .contacto .acciones { justify-content: center; }
+  .directo { margin-top: clamp(3.5rem, 7vw, 5rem); padding-top: 2.5rem; border-top: 1px solid var(--linea); max-width: 760px; margin-left: auto; margin-right: auto; }
+  .directo .acciones { gap: 1.2rem 2.2rem; }
+  h1 .eyebrow { display: block; font-family: var(--sans); font-size: 0.68rem; line-height: 1.7; letter-spacing: 0.34em; margin-bottom: 1.1rem; }
+  .indice h3 a { text-decoration: none; }
+  .indice h3 a:hover { font-style: italic; }
+  .mas { display: table; margin-top: 0.9rem; color: var(--tinta); }
   .zonas {
     list-style: none;
     margin: 0 auto 3rem;
