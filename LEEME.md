@@ -30,3 +30,19 @@ Web hecha con Astro. Se publica gratis en Cloudflare Pages, que sí permite uso 
 
 Puedes editar cualquier archivo directamente en GitHub (icono del lápiz).
 Al guardar, Cloudflare vuelve a publicar la web sola en uno o dos minutos.
+
+## Formulario de contacto (oct 2026)
+
+- Las consultas llegan a tu email (`site.js` → `email`) a través de FormSubmit, que es gratis y no necesita cuenta.
+- **La primera vez** que alguien envíe el formulario recibirás un email de FormSubmit: pulsa **Activate form**. A partir de entonces te llegan todas las consultas.
+- Tras enviar, la clienta ve la página `/gracias/`.
+
+## Agenda de la asesoría online
+
+- Crea una página de reservas gratis en **cal.com** (o Calendly), conéctala a tu Google Calendar y copia el enlace.
+- Pégalo en `src/data/site.js` → `reserva: '...'`. Los botones «Reservar» de la asesoría online abrirán tu agenda.
+- Mientras esté vacío, los botones llevan al formulario con el servicio ya elegido.
+
+## Privacidad
+
+- Rellena `titular` y `nif` en `site.js`: solo aparecen en la página `/privacidad/`, nunca en la marca.
