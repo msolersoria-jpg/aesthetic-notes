@@ -17,7 +17,7 @@ export const site = {
   reserva: '',
 
   // Datos legales: solo aparecen en la página de privacidad (no en la marca).
-  titular: '',    // tu nombre como autónoma
+  titular: 'Marta Soler Soria',
   nif: '',
 
   zona: 'Barcelona · Vallès · Maresme · Online',
