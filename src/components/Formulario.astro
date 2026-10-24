@@ -1,1 +1,130 @@
+---
+// Formulario de contacto. Envía a tu email a través de FormSubmit (gratis, sin cuenta).
+// La PRIMERA vez que alguien lo use, FormSubmit te manda un email para activarlo:
+// pulsa "Activate form" y desde entonces te llegan todas las consultas.
+import { site, opcionesServicio } from '../data/site.js';
+const { servicio = '', id = 'formulario' } = Astro.props;
+const destino = `https://formsubmit.co/${site.email}`;
+const gracias = new URL('/gracias/', Astro.site).href;
+---
+<form class="form" id={id} action={destino} method="POST" accept-charset="UTF-8">
+  <input type="hidden" name="_subject" value="Nueva consulta desde la web · Aesthetic Notes & Co" />
+  <input type="hidden" name="_next" value={gracias} />
+  <input type="hidden" name="_template" value="table" />
+  <input type="hidden" name="_captcha" value="false" />
+  <input type="text" name="_honey" class="trampa" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
+  <div class="fila">
+    <label>
+      <span>Nombre</span>
+      <input type="text" name="Nombre" autocomplete="given-name" required />
+    </label>
+    <label>
+      <span>Email</span>
+      <input type="email" name="email" autocomplete="email" required />
+    </label>
+  </div>
+
+  <div class="fila">
+    <label>
+      <span>Teléfono <i>(opcional)</i></span>
+      <input type="tel" name="Teléfono" autocomplete="tel" />
+    </label>
+    <label>
+      <span>Dónde está tu casa</span>
+      <select name="Zona" required>
+        <option value="" disabled selected>Elige una zona</option>
+        {site.zonas.map((z) => <option>{z.nombre}</option>)}
+        <option>Otra zona</option>
+      </select>
+    </label>
+  </div>
+
+  <label>
+    <span>Qué te gustaría</span>
+    <select name="Servicio" class="js-servicio" required>
+      <option value="" disabled selected={!servicio}>Elige un servicio</option>
+      {opcionesServicio.map(([v, t]) => <option value={t} data-clave={v} selected={servicio === v}>{t}</option>)}
+    </select>
+  </label>
+
+  <label>
+    <span>Cuéntame tu casa</span>
+    <textarea name="Mensaje" rows="5" placeholder="Qué estancia, qué te gustaría cambiar y, si lo tienes claro, el presupuesto o la fecha." required></textarea>
+  </label>
+
+  <label class="check">
+    <input type="checkbox" name="Privacidad" value="Aceptada" required />
+    <span>He leído y acepto la <a href="/privacidad/" target="_blank">política de privacidad</a>.</span>
+  </label>
+
+  <button class="boton lleno" type="submit">Enviar</button>
+  <p class="nota">Te respondo personalmente en 24–48 h laborables.</p>
+</form>
+
+<script>
+  // Preselecciona el servicio si se llega con ?servicio=online (o desde un botón de la web)
+  const clave = new URLSearchParams(location.search).get('servicio');
+  if (clave) {
+    document.querySelectorAll<HTMLSelectElement>('.js-servicio').forEach((sel) => {
+      const op = [...sel.options].find((o) => o.dataset.clave === clave);
+      if (op) op.selected = true;
+    });
+  }
+</script>
+
+<style>
+  .form {
+    display: grid;
+    gap: 2rem;
+    width: min(100%, 760px);
+    margin: 0 auto;
+    text-align: left;
+  }
+  .fila { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  label { display: grid; gap: 0.5rem; }
+  label > span {
+    font-size: 0.66rem;
+    font-weight: 400;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--tinta-suave);
+  }
+  label > span i { font-style: normal; letter-spacing: 0.1em; text-transform: none; }
+  input, select, textarea {
+    width: 100%;
+    padding: 0.55rem 0 0.7rem;
+    border: 0;
+    border-bottom: 1px solid var(--tinta);
+    border-radius: 0;
+    background: transparent;
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--tinta);
+    outline: none;
+    appearance: none;
+    transition: border-color 0.3s;
+  }
+  select {
+    cursor: pointer;
+    background-image: linear-gradient(45deg, transparent 50%, var(--tinta) 50%), linear-gradient(135deg, var(--tinta) 50%, transparent 50%);
+    background-position: calc(100% - 10px) 55%, calc(100% - 5px) 55%;
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+  }
+  textarea { resize: vertical; min-height: 7.5rem; line-height: 1.45; }
+  textarea::placeholder { font-style: italic; color: #a3a19d; font-size: 1.1rem; }
+  input:focus, select:focus, textarea:focus { border-bottom-color: var(--tinta-suave); }
+  .check { grid-template-columns: auto 1fr; align-items: start; gap: 0.8rem; }
+  .check input { width: 15px; height: 15px; margin: 0.3rem 0 0; padding: 0; border: 1px solid var(--tinta); appearance: auto; accent-color: var(--tinta); }
+  .check span { font-size: 0.82rem; letter-spacing: 0; text-transform: none; color: var(--tinta-suave); }
+  .check a { color: var(--tinta); }
+  button { justify-self: center; cursor: pointer; background: var(--tinta); color: var(--crema); }
+  .nota { margin: -0.8rem 0 0; text-align: center; font-family: var(--serif); font-style: italic; font-size: 1.05rem; color: var(--tinta-suave); }
+  .trampa { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+  @media (max-width: 760px) {
+    .fila { grid-template-columns: 1fr; }
+  }
+</style>
