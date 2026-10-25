@@ -11,6 +11,7 @@ const f = (slug, nums) => nums.map((n) => `/proyectos/${slug}/${slug}-${String(n
 export const proyectos = [
   {
     slug: 'salon-obra-nueva-marmol-terciopelo',
+    portadaHome: '/proyectos/portadas/portada-va.webp',
     portada: '/proyectos/va/va-05.webp',
     foco: '40% center',
     titulo: 'Obra nueva, alma serena',
@@ -28,6 +29,7 @@ export const proyectos = [
   },
   {
     slug: 'salon-lino-roble-luz-natural',
+    portadaHome: '/proyectos/portadas/portada-vp.webp',
     portada: '/proyectos/vp/vp-07.webp',
     foco: 'center center',
     titulo: 'Luz de lino',
@@ -96,6 +98,7 @@ export const proyectos = [
   },
   {
     slug: 'casa-vistas-paleta-blanco-negro',
+    portadaHome: '/proyectos/portadas/portada-br.webp',
     portada: '/proyectos/br/br-14.webp',
     foco: '60% center',
     titulo: 'Abierto al paisaje',
