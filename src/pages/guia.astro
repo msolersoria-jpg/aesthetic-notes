@@ -1,0 +1,171 @@
+---
+// Guía gratuita "Tu casa de revista, sin obras".
+// El formulario envía nombre y email a MailerLite (formulario "Guía Tu casa de revista sin obras",
+// grupo "Guía gratuita"). Una automatización de MailerLite manda la guía por email.
+import Base from '../layouts/Base.astro';
+const portada = 'https://storage.mlcdn.com/account_image/2740702/9lAAv6ogIw25MjTHjgybMGD18Evhsonu6sDpecSr.jpg';
+const endpoint = 'https://assets.mailerlite.com/jsonp/2740702/forms/202306011734738489/subscribe';
+const claves = [
+  'Antes de comprar, despeja',
+  'Despega el sofá de la pared',
+  'Una alfombra más grande de lo que crees',
+  'Cortinas altas, anchas y hasta el suelo',
+  'Tres capas de luz, y siempre cálida',
+  'Los textiles, el cambio más rápido',
+  'Mezcla texturas, no colores',
+  'Una paleta corta',
+  'Cuadros: uno grande o en grupo',
+  'Agrupa en impares y a distintas alturas',
+  'Los detalles que delatan',
+  'Algo vivo',
+];
+---
+<Base
+  title="Guía gratuita: Tu casa de revista, sin obras | Aesthetic Notes & Co"
+  description="Descarga gratis la guía con las 12 claves que se repiten en las casas de revista y que puedes aplicar sin obras y sin grandes gastos."
+  image={portada}
+>
+  <main class="guia">
+    <section class="cabecera">
+      <div class="portada">
+        <img src={portada} width="909" height="1287" alt="Portada de la guía Tu casa de revista, sin obras" />
+      </div>
+
+      <div class="texto">
+        <p class="eyebrow">Guía gratuita · 15 páginas</p>
+        <h1>Tu casa de revista, <em>sin obras</em></h1>
+        <p class="sub">Las doce claves que se repiten en las casas que más nos gustan, explicadas para que las apliques este mismo fin de semana. Con medidas, trucos y sin grandes gastos.</p>
+
+        <form class="form-guia" id="form-guia" action={endpoint} method="POST" novalidate>
+          <div class="fila">
+            <label>
+              <span>Nombre</span>
+              <input type="text" name="fields[name]" autocomplete="given-name" required />
+            </label>
+            <label>
+              <span>Email</span>
+              <input type="email" name="fields[email]" autocomplete="email" required />
+            </label>
+          </div>
+          <input type="hidden" name="ml-submit" value="1" />
+          <input type="hidden" name="anticsrf" value="true" />
+
+          <label class="check">
+            <input type="checkbox" name="consentimiento" required />
+            <span>Quiero recibir la guía y, de vez en cuando, ideas de decoración por email. Puedes darte de baja cuando quieras. He leído la <a href="/privacidad/" target="_blank">política de privacidad</a>.</span>
+          </label>
+
+          <button class="boton lleno" type="submit">Quiero la guía</button>
+          <p class="aviso" role="status" aria-live="polite"></p>
+        </form>
+
+        <div class="enviado" id="guia-enviada" hidden>
+          <p class="eyebrow">Ya está</p>
+          <p class="titular">Te la acabo de <em>enviar</em></p>
+          <p class="sub">Mira tu bandeja de entrada en unos minutos. Si no la ves, revisa Promociones o Spam y arrastra el email a Principal para no perderte los siguientes.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="indice">
+      <p class="eyebrow">Lo que encontrarás dentro</p>
+      <ol>
+        {claves.map((c, i) => <li><span>{String(i + 1).padStart(2, '0')}</span>{c}</li>)}
+      </ol>
+      <p class="firma">— Marta</p>
+    </section>
+  </main>
+</Base>
+
+<script>
+  const form = document.getElementById('form-guia') as HTMLFormElement | null;
+  const ok = document.getElementById('guia-enviada');
+  if (form && ok) {
+    const aviso = form.querySelector('.aviso') as HTMLElement;
+    const boton = form.querySelector('button') as HTMLButtonElement;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      aviso.textContent = '';
+      if (!form.checkValidity()) {
+        aviso.textContent = 'Escribe tu nombre y un email válido, y marca la casilla para poder enviártela.';
+        return;
+      }
+      boton.disabled = true;
+      boton.textContent = 'Enviando…';
+      try {
+        const datos = new FormData(form);
+        datos.delete('consentimiento');
+        const r = await fetch(form.action, { method: 'POST', body: datos });
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok || j.success === false) throw new Error('error');
+        form.hidden = true;
+        ok.hidden = false;
+      } catch {
+        aviso.textContent = 'No se ha podido enviar. Inténtalo de nuevo en un momento o escríbeme a hola@aestheticnotesandco.com.';
+        boton.disabled = false;
+        boton.textContent = 'Quiero la guía';
+      }
+    });
+  }
+</script>
+
+<style>
+  .guia { padding: clamp(3.5rem, 8vw, 7rem) var(--gutter) clamp(4rem, 9vw, 8rem); }
+  .cabecera {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: center;
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+  .portada img { width: 100%; max-width: 460px; margin-left: auto; box-shadow: 0 30px 60px -30px rgba(17, 17, 17, 0.35); }
+  h1 { margin: 0; font-family: var(--serif); font-weight: 300; font-size: clamp(2.8rem, 6vw, 4.8rem); line-height: 1.02; }
+  em { font-style: italic; }
+  .sub { margin: 1.5rem 0 2.4rem; max-width: 34rem; font-family: var(--serif); font-size: 1.3rem; line-height: 1.5; color: var(--tinta-suave); }
+
+  .form-guia { display: grid; gap: 1.8rem; max-width: 36rem; }
+  .fila { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; }
+  label { display: grid; gap: 0.5rem; }
+  label > span { font-size: 0.66rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--tinta-suave); }
+  input[type='text'], input[type='email'] {
+    width: 100%;
+    padding: 0.5rem 0 0.65rem;
+    border: 0;
+    border-bottom: 1px solid var(--tinta);
+    border-radius: 0;
+    background: transparent;
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    color: var(--tinta);
+    outline: none;
+  }
+  input:focus { border-bottom-color: var(--tinta-suave); }
+  .check { grid-template-columns: auto 1fr; align-items: start; gap: 0.8rem; }
+  .check input { width: 15px; height: 15px; margin: 0.3rem 0 0; accent-color: var(--tinta); }
+  .check span { font-size: 0.82rem; line-height: 1.55; letter-spacing: 0; text-transform: none; color: var(--tinta-suave); }
+  .check a { color: var(--tinta); }
+  button { justify-self: start; cursor: pointer; }
+  button:disabled { opacity: 0.6; cursor: default; }
+  .aviso { margin: -0.6rem 0 0; font-family: var(--serif); font-style: italic; font-size: 1.05rem; color: var(--tinta-suave); }
+  .aviso:empty { display: none; }
+
+  .enviado .titular { margin: 0; font-family: var(--serif); font-weight: 300; font-size: clamp(2.2rem, 4.5vw, 3.4rem); line-height: 1.05; }
+
+  .indice { max-width: 1180px; margin: clamp(4.5rem, 9vw, 8rem) auto 0; padding-top: clamp(2.5rem, 5vw, 4rem); border-top: 1px solid var(--linea); }
+  ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem 3rem; }
+  li { display: flex; gap: 1rem; align-items: baseline; font-family: var(--serif); font-size: 1.3rem; line-height: 1.3; }
+  li span { font-family: var(--sans); font-size: 0.68rem; letter-spacing: 0.2em; color: var(--tinta-suave); }
+  .firma { margin: 3rem 0 0; font-family: var(--serif); font-style: italic; font-size: 1.4rem; }
+
+  @media (max-width: 860px) {
+    .cabecera { grid-template-columns: 1fr; }
+    .portada img { max-width: 300px; margin: 0 auto; }
+    ol { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .fila { grid-template-columns: 1fr; }
+    ol { grid-template-columns: 1fr; }
+    button { justify-self: stretch; }
+  }
+</style>
