@@ -153,6 +153,18 @@ const whatsappUrl = site.whatsapp
       </div>
     </section>
 
+    <section class="guia-banda">
+      <a href="/guia/" class="guia-portada" aria-label="Ver la guía gratuita">
+        <img src="https://storage.mlcdn.com/account_image/2740702/9lAAv6ogIw25MjTHjgybMGD18Evhsonu6sDpecSr.jpg" width="909" height="1287" alt="Portada de la guía Tu casa de revista, sin obras" loading="lazy" />
+      </a>
+      <div class="guia-texto">
+        <p class="eyebrow">Guía gratuita</p>
+        <h2>Tu casa de revista,<br /><em>sin obras</em></h2>
+        <p>Las doce claves que se repiten en las casas que más nos gustan, con medidas y trucos para aplicarlas este fin de semana. Te la envío gratis a tu email.</p>
+        <a class="boton lleno" href="/guia/">Descargar la guía</a>
+      </div>
+    </section>
+
     <section id="contacto" class="contacto">
       <p class="eyebrow">Contacto</p>
       <h2>¿Hablamos de <em>tu casa</em>?</h2>
@@ -380,10 +392,24 @@ const whatsappUrl = site.whatsapp
   @media (max-width: 760px) {
     .rejilla { grid-template-columns: 1fr; }
     .tarjeta:nth-child(even) { margin-top: 0; }
-    .sin-obras, .sobre { grid-template-columns: 1fr; }
+    .sin-obras, .sobre, .guia-banda { grid-template-columns: 1fr; }
+    .guia-portada img { max-width: 240px; margin: 0 auto; }
     .indice li { grid-template-columns: 2.5rem 1fr; }
     .indice p { grid-column: 2; }
     .proceso ol { grid-template-columns: 1fr; }
     .zonas { grid-template-columns: 1fr 1fr; text-align: left; }
   }
+  .guia-banda {
+    display: grid;
+    grid-template-columns: minmax(0, 0.6fr) minmax(0, 1fr);
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: center;
+    padding: clamp(4rem, 9vw, 7rem) max(var(--gutter), calc((100% - 1080px) / 2));
+    background: var(--papel);
+  }
+  .guia-portada img { width: 100%; max-width: 320px; margin-left: auto; box-shadow: 0 30px 60px -30px rgba(17, 17, 17, 0.35); transition: transform 0.4s; }
+  .guia-portada:hover img { transform: translateY(-4px); }
+  .guia-texto h2 { margin: 0; font-family: var(--serif); font-weight: 300; font-size: clamp(2.4rem, 5vw, 3.8rem); line-height: 1.04; }
+  .guia-texto h2 em { font-style: italic; }
+  .guia-texto p:not(.eyebrow) { margin: 1.3rem 0 2.2rem; max-width: 34rem; font-family: var(--serif); font-size: 1.25rem; line-height: 1.5; color: var(--tinta-suave); }
 </style>
