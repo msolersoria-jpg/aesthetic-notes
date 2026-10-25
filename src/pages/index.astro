@@ -1,30 +1,28 @@
 ---
 import Base from '../layouts/Base.astro';
-import { proyectos } from '../data/proyectos.js';
+import { proyectos as todos } from '../data/proyectos.js';
+const proyectos = todos.filter((p) => p.portadaHome);
 import { site } from '../data/site.js';
 import Formulario from '../components/Formulario.astro';
 
 const servicios = [
   {
-    t: 'Decoración de tu casa',
-    d: 'Decoración de interiores sin obras: elegimos y combinamos muebles, textiles, color y piezas para que tu casa se parezca a ti.',
+    t: 'Asesoría & Personal Shopper',
+    d: 'Te ayudo a elegir y comprar los textiles y la decoración que tu casa necesita, con criterio y sin errores caros.',
+    url: '/asesoria-personal-shopper/',
+    modalidades: [
+      ['Online · Tu lista', 'desde 150 €'],
+      ['De compras juntas', 'desde 190 €'],
+      ['Lo hago yo', 'desde 290 €'],
+    ],
   },
   {
-    t: 'Asesoría de color y textil',
-    d: 'Una paleta pensada para tu luz y tu forma de vivir, con los tejidos y texturas que la hacen real. También online.',
+    t: 'Decoración de tu casa',
+    d: 'Decoración de interiores sin obras: muebles, textiles, color y piezas para que tu casa se parezca a ti.',
   },
   {
     t: 'Estilismo para marcas',
     d: 'Estilismo para marcas de mobiliario, decoración y textil hogar: catálogos, web y redes.',
-  },
-  {
-    t: 'Home staging',
-    d: 'Puesta en escena de viviendas para vender o alquilar antes: que se vean en su mejor versión, en las fotos y en la visita.',
-  },
-  {
-    t: 'Asesoría & Personal Shopper',
-    d: 'Te ayudo a elegir y comprar los textiles y la decoración que tu casa necesita, con criterio y sin errores caros. Online, de compras juntas o lo hago yo.',
-    url: '/asesoria-personal-shopper/',
   },
 ];
 
@@ -46,9 +44,9 @@ const whatsappUrl = site.whatsapp
           <span class="eyebrow">Nº 01 — Decoradora y estilista de interiores en Barcelona</span>
           Tu casa,<br /><em>en su mejor versión</em>
         </h1>
-        <p class="sub">Decoración sin obras en Barcelona, el Vallès y el Maresme: con color, textiles y las piezas justas.</p>
+        <p class="sub">Asesoría de decoración y personal shopper, sin obras: online o en Barcelona, el Vallès y el Maresme.</p>
         <div class="acciones">
-          <a class="boton lleno" href="#contacto">Cuéntame tu casa</a>
+          <a class="boton lleno" href="/asesoria-personal-shopper/">Ver la asesoría</a>
           {site.llamada ? <a class="enlace" href={site.llamada} target="_blank" rel="noopener">Primera llamada gratuita</a> : <a class="enlace" href="#proyectos">Ver proyectos</a>}
         </div>
       </div>
@@ -74,7 +72,7 @@ const whatsappUrl = site.whatsapp
         {proyectos.map((p, i) => (
           <a href={`/proyectos/${p.slug}/`} class="tarjeta">
             <div class="foto">
-              <img src={p.portada || p.fotos[0]} alt={`${p.titulo} — proyecto de decoración de interiores`} style={`object-position:${p.foco || 'center'}`} loading={i < 2 ? 'eager' : 'lazy'} />
+              <img src={p.portadaHome} width="960" height="720" alt={`${p.titulo} — proyecto de decoración de interiores`} loading="lazy" />
             </div>
             <div class="tarjeta-pie">
               <span class="numero">Nº {String(i + 1).padStart(2, '0')}</span>
@@ -89,21 +87,6 @@ const whatsappUrl = site.whatsapp
       </div>
     </section>
 
-    <section class="sin-obras">
-      <figure class="sin-obras-foto">
-        <img src="/proyectos/vp/vp-08.webp" alt="Salón blanco con mesas de roble y lámina en blanco y negro" />
-      </figure>
-      <div class="sin-obras-texto">
-        <p class="eyebrow">Sin obras</p>
-        <h2>No hace falta reformar para que tu casa cambie</h2>
-        <p>
-          Muchas casas no necesitan una reforma: necesitan una mirada. Con color, textiles,
-          luz y una buena selección de piezas, el mismo espacio puede sentirse completamente nuevo.
-          Y casi siempre partimos de lo que ya tienes.
-        </p>
-      </div>
-    </section>
-
     <section id="servicios" class="servicios">
       <div class="seccion-cab">
         <h2>Servicios</h2>
@@ -114,7 +97,15 @@ const whatsappUrl = site.whatsapp
           <li>
             <span class="num">{String(i + 1).padStart(2, '0')}</span>
             <h3>{sv.url ? <a href={sv.url}>{sv.t}</a> : sv.t}</h3>
-            <p>{sv.d}{sv.url && <> <a class="enlace mas" href={sv.url}>Ver modalidades y precios</a></>}</p>
+            <div class="sv-texto">
+              <p>{sv.d}</p>
+              {sv.modalidades && (
+                <ul class="modalidades">
+                  {sv.modalidades.map(([m, pr]) => <li><span>{m}</span><span class="pr">{pr}</span></li>)}
+                </ul>
+              )}
+              {sv.url && <a class="enlace mas" href={sv.url}>Ver modalidades y precios</a>}
+            </div>
           </li>
         ))}
       </ol>
@@ -142,14 +133,9 @@ const whatsappUrl = site.whatsapp
         <p class="eyebrow">Sobre mí</p>
         <h2>Hola, soy Marta</h2>
         <p class="entradilla">
-          Llevo más de diez años dedicada a la decoración y el estilismo de espacios, y antes pasé quince
-          en el sector textil.
+          Diez años en decoración y estilismo de espacios, y quince antes en el sector textil.
         </p>
-        <p>
-          Esa experiencia me enseñó a mirar el detalle: la calidad de un tejido, el equilibrio entre
-          texturas, la forma en que la luz transforma una estancia. Cada proyecto empieza escuchando.
-          Entender cómo se vive un espacio es lo que permite darle una identidad propia, sin artificios.
-        </p>
+        <p>Por eso miro el detalle: el tejido, la textura y la luz. Cada proyecto empieza escuchando cómo vives tu casa.</p>
       </div>
     </section>
 
@@ -169,14 +155,7 @@ const whatsappUrl = site.whatsapp
       <p class="eyebrow">Contacto</p>
       <h2>¿Hablamos de <em>tu casa</em>?</h2>
       <p class="contacto-sub">Cuéntame qué espacio quieres cambiar y lo imaginamos juntas.</p>
-      <ul class="zonas">
-        {site.zonas.map((z) => (
-          <li>
-            <h3>{z.nombre}</h3>
-            <p>{z.detalle}</p>
-          </li>
-        ))}
-      </ul>
+      <p class="zonas-linea">Barcelona · Vallès · Maresme · Online</p>
       {site.llamada && (
         <p class="llamada">¿Prefieres hablarlo? <a class="enlace" href={site.llamada} target="_blank" rel="noopener">Primera llamada gratuita · 20 min</a></p>
       )}
@@ -264,32 +243,19 @@ const whatsappUrl = site.whatsapp
   .proyectos { max-width: 1320px; margin: 0 auto; padding: 0 var(--gutter) clamp(5rem, 11vw, 9rem); }
   .rejilla {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 5rem);
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(2rem, 4vw, 3.5rem);
   }
   .tarjeta { text-decoration: none; display: block; }
-  .tarjeta:nth-child(even) { margin-top: clamp(0rem, 9vw, 8rem); }
-  .foto { overflow: hidden; aspect-ratio: 4 / 5; background: var(--arena); }
+  .foto { overflow: hidden; aspect-ratio: 4 / 3; background: var(--arena); }
   .foto img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s ease; }
   .tarjeta:hover .foto img { transform: scale(1.025); }
   .tarjeta-pie { display: flex; justify-content: space-between; align-items: center; margin: 1.1rem 0 0.6rem; }
   .numero { font-size: 0.68rem; letter-spacing: 0.24em; color: var(--tinta-suave); }
-  .tarjeta h3 { font-size: clamp(1.7rem, 2.8vw, 2.3rem); font-weight: 400; line-height: 1.1; }
+  .tarjeta h3 { font-size: clamp(1.5rem, 2.2vw, 1.9rem); font-weight: 400; line-height: 1.1; }
   .tarjeta p { margin: 0.5rem 0 0; color: var(--tinta-suave); font-size: 0.95rem; max-width: 46ch; }
 
-  /* Sin obras */
-  .sin-obras {
-    display: grid;
-    grid-template-columns: 1.15fr 1fr;
-    gap: clamp(2rem, 6vw, 6rem);
-    align-items: center;
-    max-width: 1320px;
-    margin: 0 auto;
-    padding: 0 var(--gutter) clamp(5rem, 11vw, 9rem);
-  }
-  .sin-obras-foto img { width: 100%; aspect-ratio: 5 / 4; object-fit: cover; }
-  .sin-obras-texto h2 { margin-bottom: 1.4rem; }
-  .sin-obras-texto p:not(.eyebrow), .sobre-texto p:not(.eyebrow):not(.entradilla) {
+  .sobre-texto p:not(.eyebrow):not(.entradilla) {
     color: var(--tinta-suave);
     max-width: 46ch;
     margin: 0;
@@ -309,6 +275,7 @@ const whatsappUrl = site.whatsapp
   .num { font-family: var(--serif); font-style: italic; font-size: 1.3rem; color: var(--tinta-suave); }
   .indice h3 { font-size: clamp(1.6rem, 2.8vw, 2.3rem); font-weight: 300; }
   .indice p { margin: 0; color: var(--tinta-suave); }
+  .indice li:first-child h3 { font-style: italic; }
 
   /* Proceso */
   .proceso {
@@ -371,18 +338,6 @@ const whatsappUrl = site.whatsapp
   .indice h3 a { text-decoration: none; }
   .indice h3 a:hover { font-style: italic; }
   .mas { display: table; margin-top: 0.9rem; color: var(--tinta); }
-  .zonas {
-    list-style: none;
-    margin: 0 auto 3rem;
-    padding: 1.6rem 0 0;
-    max-width: 1100px;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 1.5rem;
-    border-top: 1px solid var(--linea);
-  }
-  .zonas h3 { font-size: 1.35rem; font-weight: 400; margin-bottom: 0.3rem; }
-  .zonas p { margin: 0; font-size: 0.82rem; color: var(--tinta-suave); line-height: 1.55; }
 
   @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; }
@@ -391,13 +346,11 @@ const whatsappUrl = site.whatsapp
   }
   @media (max-width: 760px) {
     .rejilla { grid-template-columns: 1fr; }
-    .tarjeta:nth-child(even) { margin-top: 0; }
-    .sin-obras, .sobre, .guia-banda { grid-template-columns: 1fr; }
+    .sobre, .guia-banda { grid-template-columns: 1fr; }
     .guia-portada img { max-width: 240px; margin: 0 auto; }
     .indice li { grid-template-columns: 2.5rem 1fr; }
-    .indice p { grid-column: 2; }
+    .indice p, .sv-texto { grid-column: 2; }
     .proceso ol { grid-template-columns: 1fr; }
-    .zonas { grid-template-columns: 1fr 1fr; text-align: left; }
   }
   .guia-banda {
     display: grid;
@@ -412,4 +365,8 @@ const whatsappUrl = site.whatsapp
   .guia-texto h2 { margin: 0; font-family: var(--serif); font-weight: 300; font-size: clamp(2.4rem, 5vw, 3.8rem); line-height: 1.04; }
   .guia-texto h2 em { font-style: italic; }
   .guia-texto p:not(.eyebrow) { margin: 1.3rem 0 2.2rem; max-width: 34rem; font-family: var(--serif); font-size: 1.25rem; line-height: 1.5; color: var(--tinta-suave); }
+  .modalidades { list-style: none; margin: 1.1rem 0 1.3rem; padding: 0; max-width: 30rem; }
+  .modalidades li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.55rem 0; border-bottom: 1px solid var(--linea); font-family: var(--serif); font-size: 1.15rem; }
+  .modalidades .pr { font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--tinta-suave); }
+  .zonas-linea { margin: 0 0 2.5rem; font-size: 0.72rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--tinta-suave); }
 </style>
