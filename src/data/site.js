@@ -35,11 +35,9 @@ export const site = {
 // Servicios que aparecen en el desplegable del formulario.
 export const opcionesServicio = [
   ['decoracion', 'Decoración de mi casa'],
-  ['color-textil', 'Asesoría de color y textil'],
   ['online', 'Asesoría online · Tu lista'],
   ['compras', 'Personal shopper · De compras juntas'],
   ['lo-hago-yo', 'Personal shopper · Lo hago yo'],
   ['marcas', 'Estilismo para marcas'],
-  ['home-staging', 'Home staging'],
   ['otro', 'Otra cosa'],
 ];
