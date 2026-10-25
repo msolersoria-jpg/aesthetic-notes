@@ -51,8 +51,8 @@ const whatsappUrl = site.whatsapp
         </div>
       </div>
       <figure class="hero-foto">
-        <img src="/proyectos/va/va-02.webp" alt="Salón comedor con mesa de piedra, sillas de terciopelo verde y lámpara circular negra" fetchpriority="high" />
-        <figcaption>Obra nueva, alma serena — salón comedor</figcaption>
+        <img src="/portada-home.webp" alt="Jarrones de cerámica texturizada con eucalipto y un libro abierto, con el salón luminoso al fondo" width="1000" height="1493" fetchpriority="high" />
+        <figcaption>Estilismo de salón</figcaption>
       </figure>
     </section>
 
@@ -209,7 +209,7 @@ const whatsappUrl = site.whatsapp
     font-size: clamp(1.25rem, 2vw, 1.55rem);
     color: var(--tinta-suave);
   }
-  .hero-foto img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 68% center; }
+  .hero-foto img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 45%; }
 
   /* Cita */
   .intro {
@@ -342,7 +342,7 @@ const whatsappUrl = site.whatsapp
   @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; }
     .hero-foto { order: -1; }
-    .hero-foto img { aspect-ratio: 4 / 3; }
+    .hero-foto img { aspect-ratio: 4 / 3; object-position: center 70%; }
   }
   @media (max-width: 760px) {
     .rejilla { grid-template-columns: 1fr; }
