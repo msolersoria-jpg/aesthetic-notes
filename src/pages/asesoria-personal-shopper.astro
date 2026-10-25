@@ -13,8 +13,8 @@ const modalidades = [
     nota: 'por estancia · IVA incluido',
     d: 'Me mandas fotos y medidas de la estancia. Recibes un moodboard y tu lista de compra con enlaces, en dos o tres niveles de precio, y lo repasamos juntas por videollamada.',
     donde: 'En toda España',
-    foto: '/proyectos/br/br-16.webp',
-    alt: 'Detalle de cojines de lino y plaid oscuro sobre sofá claro',
+    foto: '/asesoria/online.webp',
+    alt: 'Silla de rejilla y roble con una manta de lino crudo',
   },
   {
     n: 'II',
@@ -25,8 +25,8 @@ const modalidades = [
     nota: 'IVA incluido',
     d: 'Preparo la lista de antemano y pasamos una mañana de tiendas juntas: tocamos los tejidos, comparamos tamaños y compras con la seguridad de acertar.',
     donde: 'Barcelona, Vallès y Maresme',
-    foto: '/proyectos/br/br-14.webp',
-    alt: 'Escultura de cerámica, velas y espejo redondo sobre mueble negro',
+    foto: '/asesoria/compras.webp',
+    alt: 'Estantería de madera con cerámicas artesanas en tonos arena',
   },
   {
     n: 'III',
@@ -37,8 +37,8 @@ const modalidades = [
     nota: 'por estancia, o el 15 % de la compra · IVA incluido',
     d: 'Compro por ti, lo recibo y lo coloco en tu casa, con el estilismo final incluido. Tú solo abres la puerta.',
     donde: 'Barcelona, Vallès y Maresme',
-    foto: '/proyectos/br/br-09.webp',
-    alt: 'Cama vestida con ropa de lino blanco y cojines en blanco y negro',
+    foto: '/asesoria/lo-hago-yo.webp',
+    alt: 'Dormitorio luminoso con cortina translúcida, lino y madera clara',
   },
 ];
 
@@ -116,7 +116,7 @@ const reservar = (clave) => (clave === 'online' && site.reserva ? site.reserva :
       <div class="rejilla">
         {modalidades.map((m) => (
           <article class="modalidad">
-            <div class="foto"><img src={m.foto} alt={m.alt} loading="lazy" /></div>
+            <div class="foto"><img src={m.foto} alt={m.alt} width="720" height="540" loading="lazy" /></div>
             <p class="num">{m.n}</p>
             <h3>{m.t}</h3>
             <p class="subt">{m.sub}</p>
@@ -235,7 +235,7 @@ const reservar = (clave) => (clave === 'online' && site.reserva ? site.reserva :
   .modalidades { max-width: 1320px; margin: 0 auto; padding: 0 var(--gutter) clamp(5rem, 11vw, 8rem); }
   .rejilla { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(2.5rem, 4vw, 4rem); }
   .modalidad { display: flex; flex-direction: column; }
-  .modalidad .foto { aspect-ratio: 4 / 5; overflow: hidden; background: var(--arena); margin-bottom: 1.4rem; }
+  .modalidad .foto { aspect-ratio: 4 / 3; max-width: 300px; overflow: hidden; background: var(--arena); margin-bottom: 1.4rem; }
   .modalidad .foto img { width: 100%; height: 100%; object-fit: cover; }
   .num { margin: 0; font-family: var(--serif); font-style: italic; font-size: 1.3rem; color: var(--tinta-suave); }
   .modalidad h3 { font-size: clamp(1.9rem, 2.8vw, 2.4rem); font-weight: 300; line-height: 1.1; }
@@ -297,7 +297,7 @@ const reservar = (clave) => (clave === 'online' && site.reserva ? site.reserva :
     .cabecera { grid-template-columns: 1fr; }
     .cab-foto img { aspect-ratio: 4 / 3; }
     .rejilla { grid-template-columns: 1fr; }
-    .modalidad .foto { aspect-ratio: 3 / 2; }
+    .modalidad .foto { aspect-ratio: 4 / 3; }
     .proceso ol { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 560px) {
