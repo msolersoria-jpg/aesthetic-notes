@@ -7,7 +7,7 @@ export const site = {
   nombre: 'Aesthetic Notes & Co — Interior Styling',
   instagram: 'https://www.instagram.com/aestheticnotesandco/',
   houzz: '',     // enlace a tu perfil de Houzz (opcional; muestra tu apellido)
-  google: '',    // enlace a tu Perfil de Empresa de Google (cuando esté verificado)
+  google: 'https://share.google/DS6oodjJMsOWzScb2',    // Perfil de Empresa de Google
   email: 'hola@aestheticnotesandco.com',
   whatsapp: '',   // solo números con prefijo, ej. '34600000000'
 
