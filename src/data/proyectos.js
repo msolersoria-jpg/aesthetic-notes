@@ -64,6 +64,7 @@ export const proyectos = [
   },
   {
     slug: 'piso-urbano-balcon-luz-calida',
+    portadaHome: '/proyectos/portadas/portada-ev.webp',
     portada: '/proyectos/ev/ev-05.webp',
     foco: '35% center',
     titulo: 'Ciudad y luz cálida',
@@ -98,7 +99,6 @@ export const proyectos = [
   },
   {
     slug: 'casa-vistas-paleta-blanco-negro',
-    portadaHome: '/proyectos/portadas/portada-br.webp',
     portada: '/proyectos/br/br-14.webp',
     foco: '60% center',
     titulo: 'Abierto al paisaje',
